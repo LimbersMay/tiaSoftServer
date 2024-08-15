@@ -4,4 +4,5 @@ public enum ErrorCodes
 {
     AuthErrorIncorrectCredentials,
     AuthErrorEmailAlreadyExists,
+    AuthErrorNotAuthorized,
 }
