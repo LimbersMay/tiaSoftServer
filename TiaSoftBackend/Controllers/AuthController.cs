@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TiaSoftBackend.Entities;
@@ -49,7 +48,7 @@ public class AuthController : ControllerBase
             var roles = await _userManager.GetRolesAsync(user);
             return new JsonResult(new UserResponseDto
             {
-                UserName = user.UserName,
+                Username = user.UserName,
                 Email = user.Email,
                 Roles = roles.ToList()
             });
@@ -73,7 +72,7 @@ public class AuthController : ControllerBase
 
             return new JsonResult(new UserResponseDto()
             {
-                UserName = user.FullName,
+                Username = user.FullName,
                 Email = user.Email,
                 Roles = roles.ToList()
             });
@@ -81,5 +80,43 @@ public class AuthController : ControllerBase
         
         // Unauthorized
         return Unauthorized(ErrorCodes.AuthErrorIncorrectCredentials.ToString());
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    [Route("isAuthenticated")]
+    public IActionResult IsAuthenticated()
+    {
+        var isAuthenticated = _signInManager.IsSignedIn(User);
+
+        if (isAuthenticated)
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+
+            if (user is null)
+            {
+                return Unauthorized(ErrorCodes.AuthErrorNotAuthorized.ToString());
+            }
+            
+            var roles = _userManager.GetRolesAsync(user).Result;
+            
+            return new JsonResult(new UserResponseDto()
+            {
+                Username = user.FullName,
+                Email = user.Email,
+                Roles = roles.ToList()
+            });
+        }
+
+        return Unauthorized(ErrorCodes.AuthErrorNotAuthorized.ToString());
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("logout")]
+    public IActionResult Logout()
+    {
+        _signInManager.SignOutAsync();
+        return Ok(true);
     }
 }
