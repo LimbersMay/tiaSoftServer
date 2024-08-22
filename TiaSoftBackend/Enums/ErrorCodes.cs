@@ -10,5 +10,7 @@ public enum ErrorCodes
     // USER ERRORS
     UserNotFound,
     UserNotUpdated,
-    UserErrorWhenUpdatingUSer
+    UserErrorWhenUpdatingUSer,
+    UserErrorWhenCreatingUser,
+    UserErrorUserNotCreated,
 }
