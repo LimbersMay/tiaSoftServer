@@ -163,4 +163,65 @@ public class UsersController: ControllerBase
             Roles = userRoles.ToList()
         });
     }
+
+    [HttpPost]
+    [Authorize(Roles = "Administrador, SuperUser")]
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
+    {
+        var emailExists = await _userManager.FindByEmailAsync(createUserDto.Email);
+        if (emailExists is not null)
+        {
+            return BadRequest(ErrorCodes.AuthErrorEmailAlreadyExists.ToString());
+        }
+
+        var user = new User()
+        {
+            UserName = createUserDto.Email,
+            Email = createUserDto.Email,
+            FullName = createUserDto.UserName,
+        };
+
+        var result = await _userManager.CreateAsync(user, createUserDto.Password);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(ErrorCodes.UserErrorUserNotCreated.ToString());
+        }
+        
+        // Add password
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var addPasswordResult = await _userManager.ResetPasswordAsync(user, token, createUserDto.Password);
+        
+        if (!addPasswordResult.Succeeded)
+        {
+            foreach (var identityError in addPasswordResult.Errors)
+            {
+                Console.WriteLine(identityError.Description);
+            }
+
+            return BadRequest(ErrorCodes.UserErrorWhenCreatingUser.ToString());
+        }
+        
+        // Add roles
+        var roleResult = await _userManager.AddToRolesAsync(user, createUserDto.Roles);
+        if (!roleResult.Succeeded)
+        {
+            foreach (var identityError in roleResult.Errors)
+            {
+                Console.WriteLine(identityError.Description);
+            }
+            
+            return BadRequest(ErrorCodes.UserErrorWhenCreatingUser.ToString());
+        }
+        
+        var userRoles = await _userManager.GetRolesAsync(user);
+        
+        return Ok(new UserResponseDto()
+        {
+            UserId = user.Id,
+            Username = user.FullName,
+            Email = user.Email,
+            Roles = userRoles.ToList()
+        });
+    }
 }   
