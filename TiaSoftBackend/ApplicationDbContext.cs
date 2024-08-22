@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TiaSoftBackend.Entities;
 
 namespace TiaSoftBackend;
 
-public class ApplicationDbContext: IdentityDbContext
+public class ApplicationDbContext: IdentityDbContext<User>
 {
     
     private readonly string _connectionString;

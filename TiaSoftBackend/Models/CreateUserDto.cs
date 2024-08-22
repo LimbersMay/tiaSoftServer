@@ -1,8 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace TiaSoftBackend.Models;
 
-public class CreateUserDto
+public class CreateUserDto : SignInUserDto
 {
-    public string UserName { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
+    [Required]
+    public List<string> Roles { get; set; }
 }
