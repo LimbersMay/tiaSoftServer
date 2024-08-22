@@ -13,7 +13,7 @@ public class AuthController : ControllerBase
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
-    
+
     public AuthController(UserManager<User> userManager, SignInManager<User> signInManager)
     {
         _userManager = userManager;
@@ -23,38 +23,46 @@ public class AuthController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("signIn")]
-    public async Task<IActionResult> SignIn(CreateUserDto userDto)
+    public async Task<IActionResult> SignIn(SignInUserDto userDto)
     {
         var emailExists = await _userManager.FindByEmailAsync(userDto.Email);
-        
-        if (emailExists != null)
+
+        if (emailExists is not null)
         {
             return BadRequest(ErrorCodes.AuthErrorEmailAlreadyExists.ToString());
         }
-        
+
         var user = new User()
         {
             Email = userDto.Email,
             UserName = userDto.Email,
             FullName = userDto.UserName,
         };
-        
-        var result = _userManager.CreateAsync(user, userDto.Password).Result;
-        
-        if (result.Succeeded)
-        {
-            await _signInManager.SignInAsync(user, isPersistent: true);
 
-            var roles = await _userManager.GetRolesAsync(user);
-            return new JsonResult(new UserResponseDto
-            {
-                Username = user.UserName,
-                Email = user.Email,
-                Roles = roles.ToList()
-            });
+        var result = _userManager.CreateAsync(user, userDto.Password).Result;
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(ErrorCodes.UserErrorUserNotCreated.ToString());
         }
 
-        return new JsonResult(result.Errors);
+        // Add roles
+        var roleResult = await _userManager.AddToRolesAsync(user, ["Mesero"]);
+        if (!roleResult.Succeeded)
+        {
+            // Return internal server error
+            return BadRequest(ErrorCodes.UserErrorWhenUpdatingUSer.ToString());
+        }
+
+        await _signInManager.SignInAsync(user, isPersistent: true);
+
+        var roles = await _userManager.GetRolesAsync(user);
+        return new JsonResult(new UserResponseDto
+        {
+            Username = user.UserName,
+            Email = user.Email,
+            Roles = roles.ToList()
+        });
     }
 
     [HttpPost]
@@ -62,8 +70,8 @@ public class AuthController : ControllerBase
     [Route("login")]
     public async Task<IActionResult> Login(LoginUserDto loginUser)
     {
-        var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, 
-            isPersistent:true, lockoutOnFailure:false);
+        var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password,
+            isPersistent: true, lockoutOnFailure: false);
 
         if (result.Succeeded)
         {
@@ -77,7 +85,7 @@ public class AuthController : ControllerBase
                 Roles = roles.ToList()
             });
         }
-        
+
         // Unauthorized
         return Unauthorized(ErrorCodes.AuthErrorIncorrectCredentials.ToString());
     }
@@ -97,9 +105,9 @@ public class AuthController : ControllerBase
             {
                 return Unauthorized(ErrorCodes.AuthErrorNotAuthorized.ToString());
             }
-            
+
             var roles = _userManager.GetRolesAsync(user).Result;
-            
+
             return new JsonResult(new UserResponseDto()
             {
                 Username = user.FullName,
