@@ -18,4 +18,6 @@ public class ApplicationDbContext: IdentityDbContext<User>
     {
         optionsBuilder.UseMySQL(_connectionString);
     }
+    
+    public DbSet<Category> Categories { get; set; }
 }
