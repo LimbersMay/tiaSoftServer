@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using TiaSoftBackend;
 using TiaSoftBackend.Entities;
+using TiaSoftBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +52,9 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add(new AuthorizeFilter(authenticatedUserPolicy));
 });
+
+// Repositories
+builder.Services.AddTransient<ICategoriesRepository, CategoriesRepository>();
 
 var app = builder.Build();
 
