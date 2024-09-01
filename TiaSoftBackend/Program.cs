@@ -55,6 +55,8 @@ builder.Services.AddControllers(options =>
 
 // Repositories
 builder.Services.AddTransient<ICategoriesRepository, CategoriesRepository>();
+builder.Services.AddTransient<IMenuRepository, MenuRepository>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
