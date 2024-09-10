@@ -18,7 +18,7 @@ public class RolesControllers: ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Administrador, SuperUser")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public IActionResult GetRoles()
     {
         var roles = _roleManager.Roles.Select(role => new RoleResponseDto()

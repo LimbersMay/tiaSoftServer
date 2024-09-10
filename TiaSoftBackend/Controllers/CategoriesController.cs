@@ -19,7 +19,7 @@ public class CategoriesController: ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Administrador, SuperUser")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public async Task<IActionResult> GetCategories()
     {
         var categories = await _categories.GetCategories();
@@ -35,7 +35,7 @@ public class CategoriesController: ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador, SuperUser")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto createCategoryDto)
     {
         var category = new Category()
@@ -56,7 +56,7 @@ public class CategoriesController: ControllerBase
     }
 
     [HttpPut("{categoryId}")]
-    [Authorize(Roles = "Administrador, SuperUser")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public async Task<IActionResult> UpdateCategory(string categoryId, [FromBody] UpdateCategoryDto updateCategoryDto)
     {
         var category = new Category()

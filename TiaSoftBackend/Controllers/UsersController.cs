@@ -37,7 +37,7 @@ public class UsersController: ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Administrador, SuperUser")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public async Task<IActionResult> GetUsers() {
         
         var users = await _userManager.Users.ToListAsync();
@@ -62,7 +62,7 @@ public class UsersController: ControllerBase
     }
 
     [HttpPut]
-    [Authorize(Roles = "Administrador, SuperUser")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public async Task<ActionResult> UpdateUser([FromQuery] string userId, [FromBody] UpdateUserDto updateUserDto)
     {
         var user = await _userManager.FindByIdAsync(userId);
@@ -165,7 +165,7 @@ public class UsersController: ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador, SuperUser")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
     {
         var emailExists = await _userManager.FindByEmailAsync(createUserDto.Email);
