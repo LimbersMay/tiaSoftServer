@@ -24,4 +24,6 @@ public class ApplicationDbContext: IdentityDbContext<User>
     public DbSet<Product> Products { get; set; }
     
     public DbSet<Area> Areas { get; set; }
+    
+    public DbSet<Table> Tables { get; set; }
 }
