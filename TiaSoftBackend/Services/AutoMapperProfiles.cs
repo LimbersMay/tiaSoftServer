@@ -1,5 +1,6 @@
 using AutoMapper;
 using TiaSoftBackend.Entities;
+using TiaSoftBackend.Models.Area;
 using TiaSoftBackend.Models.Menu;
 using TiaSoftBackend.Models.Product;
 
@@ -13,5 +14,10 @@ public class AutoMapperProfiles: Profile
         CreateMap<UpdateProductDto, Product>();
         CreateMap<Product, ProductResponseDto>()
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+        
+        // Areas
+        CreateMap<Area, AreaResponseDto>();
+        CreateMap<CreateAreaDto, Area>();
+        CreateMap<UpdateAreaDto, Area>();
     }
 }

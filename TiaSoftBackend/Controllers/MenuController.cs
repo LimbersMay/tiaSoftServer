@@ -22,7 +22,7 @@ public class MenuController: ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "SuperUser, Administrador")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public async Task<IActionResult> GetMenu()
     {
         var menu = await _menuRepository.GetMenu();
@@ -32,7 +32,7 @@ public class MenuController: ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "SuperUser, Administrador")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto product)
     {
         var productMapped = _mapper.Map<Product>(product);
@@ -43,7 +43,7 @@ public class MenuController: ControllerBase
     }
     
     [HttpPut("{productId}")]
-    [Authorize(Roles = "SuperUser, Administrador")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
     public async Task<IActionResult> UpdateProduct(string productId, [FromBody] UpdateProductDto product)
     {
         var productMapped = _mapper.Map<Product>(product);

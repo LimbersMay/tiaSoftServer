@@ -13,7 +13,7 @@ public static class RoleInitializer
     {
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-        string[] roleNames = {"SuperUser", "Administrador", "Mesero", "Cajero" };
+        string[] roleNames = {"SuperUsuario", "Gerente", "Capitan", "Mesero" };
         IdentityResult roleResult;
         
         foreach (var roleName in roleNames)
@@ -48,7 +48,7 @@ public static class RoleInitializer
             var createPowerUser = await userManager.CreateAsync(poweruser, userPassword);
             if (createPowerUser.Succeeded)
             {
-                await userManager.AddToRoleAsync(poweruser, "SuperUser");
+                await userManager.AddToRoleAsync(poweruser, "SuperUsuario");
             }
         }
     }
