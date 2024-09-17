@@ -13,4 +13,7 @@ public enum ErrorCodes
     UserErrorWhenUpdatingUSer,
     UserErrorWhenCreatingUser,
     UserErrorUserNotCreated,
+    
+    // TABLE ERRORS
+    TableNotFound,
 }

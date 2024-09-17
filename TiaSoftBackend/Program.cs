@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using TiaSoftBackend;
 using TiaSoftBackend.Entities;
+using TiaSoftBackend.Hubs;
 using TiaSoftBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,10 +54,15 @@ builder.Services.AddControllers(options =>
     options.Filters.Add(new AuthorizeFilter(authenticatedUserPolicy));
 });
 
+// ------- SIGNALR HUBS -------
+builder.Services.AddSignalR();
+
 // Repositories
 builder.Services.AddTransient<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddTransient<IMenuRepository, MenuRepository>();
 builder.Services.AddTransient<IAreasRepository, AreasRepository>();
+builder.Services.AddTransient<ITableStatusesRepository, TableStatusesRepository>();
+builder.Services.AddTransient<ITablesRepository, TablesRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
@@ -76,22 +82,22 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Configure CORS to allow credentials and specific origins
+app.UseCors(builder =>
+    builder.WithOrigins("http://localhost:4200")
+        .AllowAnyHeader()
+        .WithMethods("GET", "POST", "PUT", "DELETE")
+        .AllowCredentials());
+
 app.UseHttpsRedirection();
 
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-// Configure CORS to allow credentials and specific origins
-app.UseCors(policy =>
-{
-    policy.WithOrigins("http://localhost:4200") // URL de tu cliente Angular
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials();
-});
-
 app.MapControllers();
+
+// SignalR Hubs
+app.MapHub<TableHub>("api/hubs/table");
 
 app.Run();
