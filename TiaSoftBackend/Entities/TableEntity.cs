@@ -3,9 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TiaSoftBackend.Entities;
 
-public class Table
+public class TableEntity
 {
     [MaxLength(100)]
+    [Key]
     public string TableId { get; set; }
     
     [MaxLength(100)]
@@ -22,4 +23,9 @@ public class Table
     [MaxLength(100)]
     public string AreaId { get; set; }
     public Area Area { get; set; }
+    
+    [ForeignKey("TableStatusId")]
+    [MaxLength(100)]
+    public string TableStatusId { get; set; }
+    public TableStatus TableStatus { get; set; }
 }
