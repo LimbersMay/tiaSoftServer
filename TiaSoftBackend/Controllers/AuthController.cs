@@ -80,6 +80,7 @@ public class AuthController : ControllerBase
 
             return new JsonResult(new UserResponseDto()
             {
+                UserId = user.Id,
                 Username = user.FullName,
                 Email = user.Email,
                 Roles = roles.ToList()
@@ -110,6 +111,7 @@ public class AuthController : ControllerBase
 
             return new JsonResult(new UserResponseDto()
             {
+                UserId = user.Id,
                 Username = user.FullName,
                 Email = user.Email,
                 Roles = roles.ToList()
