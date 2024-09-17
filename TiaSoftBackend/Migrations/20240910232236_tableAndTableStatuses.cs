@@ -5,7 +5,7 @@
 namespace TiaSoftBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class tables : Migration
+    public partial class tableAndTableStatuses : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,20 @@ namespace TiaSoftBackend.Migrations
                 oldType: "longtext");
 
             migrationBuilder.CreateTable(
+                name: "TableStatuses",
+                columns: table => new
+                {
+                    TableStatusId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    Description = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TableStatuses", x => x.TableStatusId);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Tables",
                 columns: table => new
                 {
@@ -34,7 +48,8 @@ namespace TiaSoftBackend.Migrations
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Customers = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    AreaId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    AreaId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    TableStatusId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -49,6 +64,11 @@ namespace TiaSoftBackend.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Tables_TableStatuses_TableStatusId",
+                        column: x => x.TableStatusId,
+                        principalTable: "TableStatuses",
+                        principalColumn: "TableStatusId");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -56,6 +76,11 @@ namespace TiaSoftBackend.Migrations
                 name: "IX_Tables_AreaId",
                 table: "Tables",
                 column: "AreaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tables_TableStatusId",
+                table: "Tables",
+                column: "TableStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tables_UserId",
@@ -68,6 +93,9 @@ namespace TiaSoftBackend.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Tables");
+
+            migrationBuilder.DropTable(
+                name: "TableStatuses");
 
             migrationBuilder.AlterColumn<string>(
                 name: "FullName",

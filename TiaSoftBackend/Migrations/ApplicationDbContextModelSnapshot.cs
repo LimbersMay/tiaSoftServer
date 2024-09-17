@@ -213,7 +213,7 @@ namespace TiaSoftBackend.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("TiaSoftBackend.Entities.Table", b =>
+            modelBuilder.Entity("TiaSoftBackend.Entities.TableEntity", b =>
                 {
                     b.Property<string>("TableId")
                         .HasMaxLength(100)
@@ -230,6 +230,10 @@ namespace TiaSoftBackend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("TableStatusId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<string>("UserId")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -238,9 +242,30 @@ namespace TiaSoftBackend.Migrations
 
                     b.HasIndex("AreaId");
 
+                    b.HasIndex("TableStatusId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Tables");
+                });
+
+            modelBuilder.Entity("TiaSoftBackend.Entities.TableStatus", b =>
+                {
+                    b.Property<string>("TableStatusId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("TableStatusId");
+
+                    b.ToTable("TableStatuses");
                 });
 
             modelBuilder.Entity("TiaSoftBackend.Entities.User", b =>
@@ -372,11 +397,15 @@ namespace TiaSoftBackend.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("TiaSoftBackend.Entities.Table", b =>
+            modelBuilder.Entity("TiaSoftBackend.Entities.TableEntity", b =>
                 {
                     b.HasOne("TiaSoftBackend.Entities.Area", "Area")
                         .WithMany()
                         .HasForeignKey("AreaId");
+
+                    b.HasOne("TiaSoftBackend.Entities.TableStatus", "TableStatus")
+                        .WithMany("Tables")
+                        .HasForeignKey("TableStatusId");
 
                     b.HasOne("TiaSoftBackend.Entities.User", "User")
                         .WithMany()
@@ -384,7 +413,14 @@ namespace TiaSoftBackend.Migrations
 
                     b.Navigation("Area");
 
+                    b.Navigation("TableStatus");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TiaSoftBackend.Entities.TableStatus", b =>
+                {
+                    b.Navigation("Tables");
                 });
 #pragma warning restore 612, 618
         }
