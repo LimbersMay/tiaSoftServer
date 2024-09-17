@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TiaSoftBackend.Constants;
 using TiaSoftBackend.Entities;
 
 namespace TiaSoftBackend.Services;
@@ -9,16 +10,18 @@ public interface ITablesRepository
     Task<TableEntity> CreateTable(TableEntity table);
     Task<TableEntity> UpdateTable(TableEntity table);
     Task<TableEntity> GetTableById(string tableId);
+    Task<TableEntity> GetActiveTable(string tableName);
 }
 
-public class TablesRepository: ITablesRepository
+public class TablesRepository : ITablesRepository
 {
     private readonly ApplicationDbContext _context;
+
     public TablesRepository(ApplicationDbContext context)
     {
         _context = context;
     }
-    
+
     public async Task<IEnumerable<TableEntity>> GetTables()
     {
         return await _context.Tables
@@ -26,7 +29,7 @@ public class TablesRepository: ITablesRepository
             .Include(t => t.User)
             .Include(t => t.Area).ToListAsync();
     }
-    
+
     public async Task<TableEntity> CreateTable(TableEntity table)
     {
         var result = await _context.Tables.AddAsync(table);
@@ -38,27 +41,39 @@ public class TablesRepository: ITablesRepository
             .Include(t => t.User)
             .Include(t => t.Area)
             .FirstOrDefaultAsync(t => t.TableId == result.Entity.TableId);
-        
+
         return entity;
     }
-    
+
     public async Task<TableEntity> UpdateTable(TableEntity table)
     {
         var result = _context.Tables.Update(table);
         await _context.SaveChangesAsync();
-        
+
         // Include all navigation properties
         var entity = await _context.Tables
             .Include(t => t.TableStatus)
             .Include(t => t.User)
             .Include(t => t.Area)
             .FirstOrDefaultAsync(t => t.TableId == result.Entity.TableId);
-        
+
         return entity;
     }
-    
+
     public async Task<TableEntity> GetTableById(string tableId)
     {
         return await _context.Tables.FirstOrDefaultAsync(t => t.TableId == tableId);
+    }
+
+    public async Task<TableEntity> GetActiveTable(string tableName)
+    {
+        /*
+         * An active table is a table with a status of "Activo" or "PorAutorizar".
+         */
+
+        return await _context.Tables.FirstOrDefaultAsync(t =>
+            t.Name == tableName &&
+            (t.TableStatus.Name == TableStatusConstants.Activo.ToString() ||
+             t.TableStatus.Name == TableStatusConstants.PorAutorizar.ToString()));
     }
 }
