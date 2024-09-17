@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TiaSoftBackend.Enums;
 using TiaSoftBackend.Models.Table;
 using TiaSoftBackend.Services;
 
@@ -43,6 +44,20 @@ public class TablesController: ControllerBase
     {
         var tableStatuses = await _tableStatusesRepository.GetTableStatuses();
         return new JsonResult(tableStatuses);
+    }
+    
+    [HttpGet("tableExists")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan")]
+    public async Task<IActionResult> TableExists(string tableName)
+    {
+        var table = await _tablesRepository.GetActiveTable(tableName);
+        
+        if (table is null)
+        {
+            return NotFound(ErrorCodes.TableNotFound.ToString());
+        }
+        
+        return new JsonResult(_mapper.Map<TableResponseDto>(table));
     }
     
     // Update table and create table are located in the table Hub
