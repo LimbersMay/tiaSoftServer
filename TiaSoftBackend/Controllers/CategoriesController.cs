@@ -28,7 +28,8 @@ public class CategoriesController: ControllerBase
         {
             CategoryId = category.CategoryId,
             Description = category.Description,
-            Name = category.Name
+            Name = category.Name,
+            Icon = category.Icon
         });
         
         return new JsonResult(categoriesDto);
