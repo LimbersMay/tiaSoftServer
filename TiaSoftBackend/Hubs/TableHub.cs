@@ -65,7 +65,6 @@ public class TableHub: Hub<ITableHub>
             TableId = Guid.NewGuid().ToString(),
             UserId = Context.UserIdentifier,
             Name = table.Name,
-            Customers = table.Customers,
             AreaId = table.AreaId,
             TableStatusId = activeStatus.TableStatusId
         };
@@ -85,7 +84,6 @@ public class TableHub: Hub<ITableHub>
         var table = await _tablesRepository.GetTableById(tableId);
         
         table.Name = updateTableDto.Name;
-        table.Customers = updateTableDto.Customers;
         table.AreaId = updateTableDto.AreaId;
         
         var result = await _tablesRepository.UpdateTable(table);

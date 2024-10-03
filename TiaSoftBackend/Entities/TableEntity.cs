@@ -11,7 +11,6 @@ public class TableEntity
     
     [MaxLength(100)]
     public string Name { get; set; }
-    public int Customers { get; set; }
     
     // Navigation properties
     [ForeignKey("UserId")]
@@ -28,4 +27,9 @@ public class TableEntity
     [MaxLength(100)]
     public string TableStatusId { get; set; }
     public TableStatus TableStatus { get; set; }
+     
+    [ForeignKey("UserId")]
+    [MaxLength(100)]
+    public string? PaymentAuthorizedByUserId { get; set; }
+    public User? PaymentAuthorizedByUser { get; set; }
 }
