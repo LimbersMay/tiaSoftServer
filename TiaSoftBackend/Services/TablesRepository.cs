@@ -27,6 +27,7 @@ public class TablesRepository : ITablesRepository
         return await _context.Tables
             .Include(t => t.TableStatus)
             .Include(t => t.User)
+            .Include(t => t.PaymentAuthorizedByUser)
             .Include(t => t.Area).ToListAsync();
     }
 
@@ -40,6 +41,7 @@ public class TablesRepository : ITablesRepository
             .Include(t => t.TableStatus)
             .Include(t => t.User)
             .Include(t => t.Area)
+            .Include(t => t.PaymentAuthorizedByUser)
             .FirstOrDefaultAsync(t => t.TableId == result.Entity.TableId);
 
         return entity;
@@ -55,6 +57,7 @@ public class TablesRepository : ITablesRepository
             .Include(t => t.TableStatus)
             .Include(t => t.User)
             .Include(t => t.Area)
+            .Include(t => t.PaymentAuthorizedByUser)
             .FirstOrDefaultAsync(t => t.TableId == result.Entity.TableId);
 
         return entity;
