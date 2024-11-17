@@ -9,6 +9,8 @@ public class Order
     [MaxLength(36)]
     public string OrderId { get; set; }
     
+    public int OrderNumber { get; set; }
+    
     [MaxLength(36)]
     public string AdditionalInfo { get; set; } 
     
@@ -42,10 +44,13 @@ public class Order
     public string AreaId { get; set; }
     public Area Area { get; set; }
     
-    // FK to AccountId
-    [ForeignKey("AccountId")]
+    // FK to Bill
+    [ForeignKey("BillId")]
     [MaxLength(36)]
-    public string AccountId { get; set; }
+    public string BillId { get; set; }
+    
+    // No navigation property for Bill
+    // No need because we can get all orders in a bill
     
     // M-M With OrderProduct
     public ICollection<OrderProduct> Products { get; set; }

@@ -3,6 +3,7 @@ using TiaSoftBackend.Entities;
 using TiaSoftBackend.Models;
 using TiaSoftBackend.Models.Area;
 using TiaSoftBackend.Models.Menu;
+using TiaSoftBackend.Models.Order;
 using TiaSoftBackend.Models.Product;
 using TiaSoftBackend.Models.Table;
 
@@ -13,7 +14,9 @@ public class AutoMapperProfiles: Profile
     public AutoMapperProfiles()
     {
         CreateMap<CreateProductDto, Product>();
+        
         CreateMap<UpdateProductDto, Product>();
+        
         CreateMap<Product, ProductResponseDto>()
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
         
@@ -27,10 +30,19 @@ public class AutoMapperProfiles: Profile
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.FullName));
 
+        // Bills
+        CreateMap<Bill, BillResponseDto>();
+        
         // TableStatuses
         CreateMap<TableStatus, TableStatusResponseDto>();
         
         // Tables
         CreateMap<TableEntity, TableResponseDto>();
+        
+        // Order
+        CreateMap<Order, OrderResponseDto>()
+            .ForMember(dest => dest.TableName, opt => opt.MapFrom(src => src.Table.Name));
+        
+        CreateMap<OrderProduct, OrderProductResponse>();
     }
 }

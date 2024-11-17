@@ -16,4 +16,10 @@ public enum ErrorCodes
     
     // TABLE ERRORS
     TableNotFound,
+    
+    // MENU ERRORS
+    MenuNotFound,
+    MenuNotUpdated,
+    MenuNotCreated,
+    MenuImageCannotBeUploaded,
 }

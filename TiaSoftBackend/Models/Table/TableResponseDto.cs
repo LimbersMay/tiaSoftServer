@@ -11,4 +11,5 @@ public class TableResponseDto
     public AreaResponseDto Area { get; set; }
     public TableStatusResponseDto TableStatus { get; set; }
     public UserResponseDto PaymentAuthorizedByUser { get; set; }
+    public IEnumerable<BillResponseDto> Bills { get; set; }
 }

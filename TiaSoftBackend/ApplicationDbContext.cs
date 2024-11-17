@@ -17,7 +17,7 @@ public class ApplicationDbContext: IdentityDbContext<User>
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySQL(_connectionString);
+        optionsBuilder.UseMySQL(_connectionString).EnableSensitiveDataLogging();
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -77,4 +77,8 @@ public class ApplicationDbContext: IdentityDbContext<User>
     public DbSet<Order> Orders { get; set; }
     
     public DbSet<OrderProduct> OrderProducts { get; set; }
+    
+    public DbSet<Bill> Bills { get; set; }
+    
+    public DbSet<DailyOrderCounter> DailyOrderCounters { get; set; }
 }

@@ -6,6 +6,7 @@ using TiaSoftBackend.Constants;
 using TiaSoftBackend.Entities;
 using TiaSoftBackend.Models.Table;
 using TiaSoftBackend.Services;
+using TiaSoftBackend.Specifications.TableSpecs;
 
 namespace TiaSoftBackend.Hubs;
 
@@ -19,12 +20,18 @@ public class TableHub: Hub<ITableHub>
 {
     private readonly ITablesRepository _tablesRepository;
     private readonly ITableStatusesRepository _tableStatusesRepository;
+    private readonly IBillsRepository _billsRepository;
     private readonly IMapper _mapper;
     
-    public TableHub(ITablesRepository tablesRepository, ITableStatusesRepository tableStatusesRepository, IMapper mapper)
+    public TableHub(
+        ITablesRepository tablesRepository, 
+        ITableStatusesRepository tableStatusesRepository, 
+        IBillsRepository billsRepository,
+        IMapper mapper)
     {
         _tablesRepository = tablesRepository;
         _tableStatusesRepository = tableStatusesRepository;
+        _billsRepository = billsRepository;
         _mapper = mapper;
     }
     
@@ -70,6 +77,17 @@ public class TableHub: Hub<ITableHub>
         };
         
         var tableEntity = await _tablesRepository.CreateTable(newTable);
+        
+        var bill = new Bill()
+        {
+            BillId = Guid.NewGuid().ToString(),
+            TableId = tableEntity.TableId,
+            Name = "Cuenta de " + tableEntity.Name,
+            Total = 0
+        };
+        
+        await _billsRepository.CreateBill(bill);
+        
         var tableResponse = _mapper.Map<TableResponseDto>(tableEntity);
         
         // Send the new table to all users in the "ManagersAndCaptains" group
@@ -81,7 +99,7 @@ public class TableHub: Hub<ITableHub>
 
     public async Task UpdateTable(string tableId, UpdateTableDto updateTableDto)
     {
-        var table = await _tablesRepository.GetTableById(tableId);
+        var table = await _tablesRepository.GetTable(new TableIdSpecification(tableId));
         
         table.Name = updateTableDto.Name;
         table.AreaId = updateTableDto.AreaId;
@@ -97,7 +115,8 @@ public class TableHub: Hub<ITableHub>
 
     public async Task SendTableToCashier(string tableId)
     {
-        var table = await _tablesRepository.GetTableById(tableId);
+        var table = await _tablesRepository.GetTable(new TableIdSpecification(tableId));
+        
         var billStatus = await _tableStatusesRepository.GetTableStatusByName(TableStatusConstants.PorAutorizar.ToString());
         
         table.TableStatusId = billStatus.TableStatusId;

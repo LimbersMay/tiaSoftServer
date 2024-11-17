@@ -4,6 +4,7 @@ namespace TiaSoftBackend.Entities;
 
 public class OrderProduct
 {
+    // The orderId and productId are used as a composite key
     [MaxLength(36)]
     public string OrderId { get; set; }
     public Order Order { get; set; }

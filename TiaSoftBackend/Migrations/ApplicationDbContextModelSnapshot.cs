@@ -223,6 +223,31 @@ namespace TiaSoftBackend.Migrations
                     b.ToTable("Areas");
                 });
 
+            modelBuilder.Entity("TiaSoftBackend.Entities.Bill", b =>
+                {
+                    b.Property<string>("BillId")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("TableId")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<decimal>("Total")
+                        .HasMaxLength(36)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("BillId");
+
+                    b.HasIndex("TableId");
+
+                    b.ToTable("Bills");
+                });
+
             modelBuilder.Entity("TiaSoftBackend.Entities.Category", b =>
                 {
                     b.Property<string>("CategoryId")
@@ -247,13 +272,26 @@ namespace TiaSoftBackend.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("TiaSoftBackend.Entities.DailyOrderCounter", b =>
+                {
+                    b.Property<string>("DailyOrderCounterId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("OrderCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("DailyOrderCounterId");
+
+                    b.ToTable("DailyOrderCounters");
+                });
+
             modelBuilder.Entity("TiaSoftBackend.Entities.Order", b =>
                 {
                     b.Property<string>("OrderId")
-                        .HasMaxLength(36)
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<string>("AccountId")
                         .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
 
@@ -265,10 +303,17 @@ namespace TiaSoftBackend.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
 
+                    b.Property<string>("BillId")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("OrderStatusId")
                         .HasMaxLength(36)
@@ -293,6 +338,8 @@ namespace TiaSoftBackend.Migrations
                     b.HasKey("OrderId");
 
                     b.HasIndex("AreaId");
+
+                    b.HasIndex("BillId");
 
                     b.HasIndex("OrderStatusId");
 
@@ -567,11 +614,24 @@ namespace TiaSoftBackend.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TiaSoftBackend.Entities.Bill", b =>
+                {
+                    b.HasOne("TiaSoftBackend.Entities.TableEntity", "Table")
+                        .WithMany("Bills")
+                        .HasForeignKey("TableId");
+
+                    b.Navigation("Table");
+                });
+
             modelBuilder.Entity("TiaSoftBackend.Entities.Order", b =>
                 {
                     b.HasOne("TiaSoftBackend.Entities.Area", "Area")
                         .WithMany()
                         .HasForeignKey("AreaId");
+
+                    b.HasOne("TiaSoftBackend.Entities.Bill", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("BillId");
 
                     b.HasOne("TiaSoftBackend.Entities.OrderStatus", "OrderStatus")
                         .WithMany()
@@ -649,6 +709,11 @@ namespace TiaSoftBackend.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TiaSoftBackend.Entities.Bill", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("TiaSoftBackend.Entities.Order", b =>
                 {
                     b.Navigation("Products");
@@ -657,6 +722,11 @@ namespace TiaSoftBackend.Migrations
             modelBuilder.Entity("TiaSoftBackend.Entities.Product", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("TiaSoftBackend.Entities.TableEntity", b =>
+                {
+                    b.Navigation("Bills");
                 });
 
             modelBuilder.Entity("TiaSoftBackend.Entities.TableStatus", b =>

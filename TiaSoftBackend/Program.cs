@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -52,6 +54,10 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(new AuthorizeFilter(authenticatedUserPolicy));
+}).AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
 });
 
 // ------- SIGNALR HUBS -------
@@ -61,8 +67,10 @@ builder.Services.AddSignalR();
 builder.Services.AddTransient<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddTransient<IMenuRepository, MenuRepository>();
 builder.Services.AddTransient<IAreasRepository, AreasRepository>();
+builder.Services.AddTransient<IBillsRepository, BillsRepository>();
 builder.Services.AddTransient<ITableStatusesRepository, TableStatusesRepository>();
 builder.Services.AddTransient<ITablesRepository, TablesRepository>();
+builder.Services.AddTransient<IOrdersRepository, OrdersRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
@@ -90,7 +98,7 @@ app.UseCors(builder =>
         .AllowCredentials());
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
@@ -99,5 +107,6 @@ app.MapControllers();
 
 // SignalR Hubs
 app.MapHub<TableHub>("api/hubs/table");
+app.MapHub<OrderHub>("api/hubs/order");
 
 app.Run();

@@ -6,25 +6,28 @@ namespace TiaSoftBackend.Entities;
 public class Product
 {
     [Key]
-    [Required]
+    [MaxLength(36)]
     public string ProductId { get; set; }
     
-    [Required]
+    [MaxLength(50)]
     public string Name { get; set; }
     
+    [MaxLength(100)]
     public string? Description { get; set; }
     
-    [Required]
+    [MaxLength(100)]
     public decimal Price { get; set; }
     
-    [Required]
     public bool IsAvailable { get; set; }
     
-    [Required]
+    [MaxLength(255)]
     public string? ImageUrl { get; set; }
     
     [ForeignKey("CategoryId")]
-    [Required]
+    [MaxLength(36)]
     public string CategoryId { get; set; }
     public Category Category { get; set; }
+    
+    // M-M With OrderProduct
+    public ICollection<OrderProduct> Orders { get; set; }
 }
