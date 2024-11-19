@@ -7,7 +7,11 @@ using TiaSoftBackend.DTOs.Tables;
 
 namespace TiaSoftBackend.UseCases.Tables;
 
-public class CreateTable (ITablesRepository tablesRepository, ITableStatusesRepository tableStatusesRepository, IMapper mapper)
+public class CreateTable (
+    ITablesRepository tablesRepository, 
+    ITableStatusesRepository tableStatusesRepository,
+    IBillsRepository billsRepository,
+    IMapper mapper)
 {
     public async Task<Result<TableDto>> Execute(CreateTableRequest request, string waiterId)
     {
@@ -24,6 +28,17 @@ public class CreateTable (ITablesRepository tablesRepository, ITableStatusesRepo
         };
         
         var result = await tablesRepository.CreateTable(newTable);
+        
+        // When a table is created, a default bill is created
+        var bill = new Bill()
+        {
+            BillId = Guid.NewGuid().ToString(),
+            TableId = result.TableId,
+            Name = "Cuenta de " + result.Name,
+            Total = 0
+        };
+        
+        await billsRepository.CreateBill(bill);
         
         return mapper.Map<TableDto>(result);
     }

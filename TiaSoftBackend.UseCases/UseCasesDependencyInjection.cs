@@ -28,10 +28,11 @@ public static class UseCasesDependencyInjection
             .AddScoped<SendTableToCashier>()
             .AddScoped<GetTableStatuses>()
             .AddScoped<CreateTable>();
-    
+
     private static IServiceCollection AddBillUseCases(this IServiceCollection services)
         => services.AddScoped<BillsUseCases>()
-            .AddScoped<CreateBill>();
+            .AddScoped<CreateBill>()
+            .AddScoped<UpdateBill>();
 
     private static IServiceCollection AddAreaUseCases(this IServiceCollection services)
         => services.AddScoped<AreasUseCases>()
@@ -66,5 +67,6 @@ public static class UseCasesDependencyInjection
             typeof(BillsProfile).Assembly,
             typeof(MenusProfile).Assembly,
             typeof(CategoriesProfile).Assembly,
-            typeof(OrdersProfile).Assembly);
+            typeof(OrdersProfile).Assembly,
+            typeof(RolesProfile).Assembly);
 }

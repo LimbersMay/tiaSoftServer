@@ -15,7 +15,7 @@ public class CreateOrder (IOrdersRepository ordersRepository, IMenuRepository me
         
         if (defaultOrderStatus == null)
         {
-            return Result.Failure<List<OrderDto>>(ErrorCodes.ErrorCodes.OrderStatusNotFound);
+            return Result.NotFound<List<OrderDto>>(ErrorCodes.ErrorCodes.OrderStatusNotFound);
         }
         
         var ordersToPrint = new List<Order>();
@@ -46,15 +46,20 @@ public class CreateOrder (IOrdersRepository ordersRepository, IMenuRepository me
                 });
             }
             
+            // Calculate the orderId, current date without time, only dd/MM/yyyy
+            var orderCounter = await ordersRepository.GetOrdersCount(DateTime.Today);
+            
             var newOrder = new Order
             {
                 OrderId = newOrderId,
                 UserId = userId,
                 TableId = bill.TableId,
                 AreaId = request.AreaId,
+                AdditionalInfo = request.AdditionalInfo ?? String.Empty,
                 OrderStatusId = defaultOrderStatus.OrderStatusId,
                 BillId = bill.BillId,
-                TotalPrice = billTotal
+                TotalPrice = billTotal,
+                OrderNumber = orderCounter
             };
             
             newOrder.Products = products;

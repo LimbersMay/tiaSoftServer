@@ -40,4 +40,9 @@ public static class ErrorCodes
     // ORDER STATUS ERRORS
     public const string OrderStatusNotFound = "OrderStatusNotFound";
     
+    // BILL ERRORS
+    public const string BillNotFound = "BillNotFound";
+    public const string BillNotUpdated = "BillNotUpdated";
+    public const string BillNotCreated = "BillNotCreated";
+    
 } 

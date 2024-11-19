@@ -39,6 +39,7 @@ public class TablesRepository : ITablesRepository
             .Include(t => t.User)
             .Include(t => t.Area)
             .Include(t => t.PaymentAuthorizedByUser)
+            .Include(t => t.Bills)
             .FirstOrDefaultAsync(specification.ToExpression());
     }
     

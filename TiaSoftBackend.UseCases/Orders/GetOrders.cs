@@ -12,6 +12,12 @@ public class GetOrders (IOrdersRepository ordersRepository, IMapper mapper)
     public async Task<Result<List<OrderDto>>> Execute(Specification<Order> specification)
     {
         var orders = await ordersRepository.GetOrdersBySpecification(specification);
+        
+        foreach (var order in orders)
+        {
+            Console.WriteLine($"------------------------------------ Order {order.OrderId} ------------------------------------");
+        }
+        
         return mapper.Map<List<OrderDto>>(orders);
     }
 }

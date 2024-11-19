@@ -31,6 +31,8 @@ public class OrdersController (OrdersUseCases orders, UserManager<User> userMana
                 .ToValueOrProblemDetails();
         }
 
+        Console.WriteLine($"User id: {userId}");
+
         return await orders.GetOrders.Execute(new UserIdSpecification(userId))
             .ToValueOrProblemDetails();
     }

@@ -98,36 +98,6 @@ public class TableHub (TablesUseCases tables, BillsUseCases bills) : Hub<ITableH
             return;
         }
         
-        var bill = new CreateBillRequest
-        {
-            TableId = newTable.Value.TableId,
-            Name = "Cuenta de " + newTable.Value.Name,
-        };
-        
-        /*
-         * Execute the "CreateBill" use case
-         * If there are any errors, return them
-         */
-        
-        var result = await bills.CreateBill.Execute(bill, userId);
-        
-        if (result.Errors.Any())
-        {
-            var errorsMap = result.Errors.Select(e => new { e.ErrorCode, e.Message });
-            
-            var problemDetails = new ProblemDetails
-            {
-                Title = "Errors found",
-                Detail = "Error creating bill",
-                Status = 400,
-                Extensions = { { "Errors", errorsMap } }
-            };
-            
-            await Clients.User(Context.ConnectionId).ReceiveError(problemDetails);
-            
-            return;
-        }
-        
         // Send the new table to all users in the "ManagersAndCaptains" group
         await Clients.Group("ManagersAndCaptains").ReceiveTable(newTable.Value);
         

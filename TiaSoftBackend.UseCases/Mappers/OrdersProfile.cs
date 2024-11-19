@@ -13,5 +13,6 @@ public class OrdersProfile : Profile
             .ForMember(dest => dest.TableName, opt => opt.MapFrom(src => src.Table.Name));
         
         CreateMap<OrderProduct, OrderProductDto>();
+        CreateMap<OrderStatus, OrderStatusDto>();
     }
 }
