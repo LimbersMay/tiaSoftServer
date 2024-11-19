@@ -27,6 +27,13 @@ public interface IOrdersRepository
     /// <param name="orderDate"> The date to get the orders count for</param>
     /// <returns></returns>
     Task<int> GetOrdersCount(DateTime orderDate);
+    
+    /// <summary>
+    /// Get an order status by name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    Task<OrderStatus?> GetOrderStatusByName(string name);
 }
 
 public class OrdersRepository: IOrdersRepository
@@ -116,5 +123,10 @@ public class OrdersRepository: IOrdersRepository
         
         await _dbContext.SaveChangesAsync();
         return orderCounter.OrderCount;
+    }
+    
+    public async Task<OrderStatus?> GetOrderStatusByName(string name)
+    {
+        return await _dbContext.OrderStatuses.FirstOrDefaultAsync(os => os.Name == name);
     }
 }

@@ -103,5 +103,6 @@ app.MapControllers();
 
 // ------- SIGNALR HUBS -------
 app.MapHub<TableHub>("api/hubs/table");
+app.MapHub<OrderHub>("api/hubs/order");
 
 app.Run();

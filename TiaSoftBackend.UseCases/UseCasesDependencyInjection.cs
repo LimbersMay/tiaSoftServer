@@ -1,7 +1,9 @@
 using TiaSoftBackend.UseCases.Areas;
 using TiaSoftBackend.UseCases.Bills;
+using TiaSoftBackend.UseCases.Categories;
 using TiaSoftBackend.UseCases.Mappers;
 using TiaSoftBackend.UseCases.Menus;
+using TiaSoftBackend.UseCases.Orders;
 using TiaSoftBackend.UseCases.Tables;
 
 namespace TiaSoftBackend.UseCases;
@@ -14,7 +16,9 @@ public static class UseCasesDependencyInjection
         => services.AddTableUseCases()
             .AddBillUseCases()
             .AddAreaUseCases()
-            .AddMenuUseCases();
+            .AddMenuUseCases()
+            .AddCategoryUseCases()
+            .AddOrderUseCases();
     
     private static IServiceCollection AddTableUseCases(this IServiceCollection services)
         => services.AddScoped<TablesUseCases>()
@@ -42,6 +46,17 @@ public static class UseCasesDependencyInjection
             .AddScoped<CreateMenu>()
             .AddScoped<UpdateMenu>()
             .AddScoped<UploadMenuImage>();
+    
+    private static IServiceCollection AddCategoryUseCases(this IServiceCollection services)
+        => services.AddScoped<CategoriesUseCases>()
+            .AddScoped<GetCategories>()
+            .AddScoped<CreateCategory>()
+            .AddScoped<UpdateCategory>();
+
+    private static IServiceCollection AddOrderUseCases(this IServiceCollection services)
+        => services.AddScoped<OrdersUseCases>()
+            .AddScoped<CreateOrder>()
+            .AddScoped<GetOrders>();
 
     public static IServiceCollection AddMappers(this IServiceCollection services)
         => services.AddAutoMapper(
@@ -49,5 +64,7 @@ public static class UseCasesDependencyInjection
             typeof(AreasProfile).Assembly,
             typeof(UsersProfile).Assembly,
             typeof(BillsProfile).Assembly,
-            typeof(MenusProfile).Assembly);
+            typeof(MenusProfile).Assembly,
+            typeof(CategoriesProfile).Assembly,
+            typeof(OrdersProfile).Assembly);
 }

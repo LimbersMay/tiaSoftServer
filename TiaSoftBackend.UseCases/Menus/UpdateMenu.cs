@@ -11,6 +11,7 @@ public class UpdateMenu (IMenuRepository menuRepository, IMapper mapper)
     public async Task<Result<MenuDto>> Execute(UpdateMenuRequest request, string menuId)
     {
         var menuEntity = mapper.Map<Product>(request);
+        menuEntity.ProductId = menuId;
         
         var updatedMenu = await menuRepository.UpdateProduct(menuEntity);
         

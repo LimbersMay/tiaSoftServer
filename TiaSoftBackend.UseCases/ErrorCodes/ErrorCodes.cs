@@ -37,4 +37,7 @@ public static class ErrorCodes
     public const string AreaNotUpdated = "AreaNotUpdated";
     public const string AreaNotCreated = "AreaNotCreated";
     
+    // ORDER STATUS ERRORS
+    public const string OrderStatusNotFound = "OrderStatusNotFound";
+    
 } 
