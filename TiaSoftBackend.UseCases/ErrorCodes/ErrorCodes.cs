@@ -30,4 +30,10 @@ public static class ErrorCodes
     public const string TableStatusNotUpdated = "TableStatusNotUpdated";
     public const string TableStatusNotCreated = "TableStatusNotCreated";
     public const string TableStatusNotDeleted = "TableStatusNotDeleted";
+    
+    // AREA ERRORS
+    public const string AreaNotFound = "AreaNotFound";
+    public const string AreaNotUpdated = "AreaNotUpdated";
+    public const string AreaNotCreated = "AreaNotCreated";
+    
 } 

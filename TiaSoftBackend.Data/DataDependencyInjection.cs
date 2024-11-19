@@ -10,5 +10,8 @@ public static class DataDependencyInjection
         => services.AddScoped<ICategoriesRepository, CategoriesRepository>()
             .AddScoped<ITablesRepository, TablesRepository>()
             .AddScoped<ITableStatusesRepository, TableStatusesRepository>()
-            .AddScoped<IBillsRepository, BillsRepository>();
+            .AddScoped<IBillsRepository, BillsRepository>()
+            .AddScoped<IAreasRepository, AreasRepository>()
+            .AddScoped<IMenuRepository, MenuRepository>()
+            .AddScoped<IOrdersRepository, OrdersRepository>();
 }

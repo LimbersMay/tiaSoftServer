@@ -1,3 +1,4 @@
+using TiaSoftBackend.UseCases.Areas;
 using TiaSoftBackend.UseCases.Bills;
 using TiaSoftBackend.UseCases.Mappers;
 using TiaSoftBackend.UseCases.Tables;
@@ -9,19 +10,30 @@ using Microsoft.Extensions.DependencyInjection;
 public static class UseCasesDependencyInjection
 {
     public static IServiceCollection AddUseCases(this IServiceCollection services)
-        => services.AddVehicleUseCases();
-
-    private static IServiceCollection AddVehicleUseCases(this IServiceCollection services)
+        => services.AddTableUseCases()
+            .AddBillUseCases()
+            .AddAreaUseCases();
+    
+    private static IServiceCollection AddTableUseCases(this IServiceCollection services)
         => services.AddScoped<TablesUseCases>()
             .AddScoped<GetTables>()
             .AddScoped<GetTable>()
             .AddScoped<UpdateTable>()
             .AddScoped<SendTableToCashier>()
             .AddScoped<GetTableStatuses>()
-            .AddScoped<CreateTable>()
-            .AddScoped<BillsUseCases>()
+            .AddScoped<CreateTable>();
+    
+    private static IServiceCollection AddBillUseCases(this IServiceCollection services)
+        => services.AddScoped<BillsUseCases>()
             .AddScoped<CreateBill>();
 
+    private static IServiceCollection AddAreaUseCases(this IServiceCollection services)
+        => services.AddScoped<AreasUseCases>()
+            .AddScoped<GetAreas>()
+            .AddScoped<CreateArea>()
+            .AddScoped<CreateArea>()
+            .AddScoped<UpdateArea>();
+    
     public static IServiceCollection AddMappers(this IServiceCollection services)
         => services.AddAutoMapper(
             typeof(TablesProfile).Assembly, 
