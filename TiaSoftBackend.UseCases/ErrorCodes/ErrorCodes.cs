@@ -23,6 +23,7 @@ public static class ErrorCodes
     public const string MenuNotFound = "MenuNotFound";
     public const string MenuNotUpdated = "MenuNotUpdated";
     public const string MenuNotCreated = "MenuNotCreated";
+    public const string MenuImageInvalid = "MenuImageInvalid";
     public const string MenuImageCannotBeUploaded = "MenuImageCannotBeUploaded";
     
     // TABLE STATUS ERRORS

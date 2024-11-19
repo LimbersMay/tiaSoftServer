@@ -132,5 +132,4 @@ public class MenuController: ControllerBase
             imagePath = relativeFilePath
         });
     }
-
 }

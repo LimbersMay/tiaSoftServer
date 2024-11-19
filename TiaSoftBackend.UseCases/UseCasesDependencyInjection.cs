@@ -1,6 +1,7 @@
 using TiaSoftBackend.UseCases.Areas;
 using TiaSoftBackend.UseCases.Bills;
 using TiaSoftBackend.UseCases.Mappers;
+using TiaSoftBackend.UseCases.Menus;
 using TiaSoftBackend.UseCases.Tables;
 
 namespace TiaSoftBackend.UseCases;
@@ -12,7 +13,8 @@ public static class UseCasesDependencyInjection
     public static IServiceCollection AddUseCases(this IServiceCollection services)
         => services.AddTableUseCases()
             .AddBillUseCases()
-            .AddAreaUseCases();
+            .AddAreaUseCases()
+            .AddMenuUseCases();
     
     private static IServiceCollection AddTableUseCases(this IServiceCollection services)
         => services.AddScoped<TablesUseCases>()
@@ -34,10 +36,18 @@ public static class UseCasesDependencyInjection
             .AddScoped<CreateArea>()
             .AddScoped<UpdateArea>();
     
+    private static IServiceCollection AddMenuUseCases(this IServiceCollection services)
+        => services.AddScoped<MenuUseCases>()
+            .AddScoped<GetMenus>()
+            .AddScoped<CreateMenu>()
+            .AddScoped<UpdateMenu>()
+            .AddScoped<UploadMenuImage>();
+
     public static IServiceCollection AddMappers(this IServiceCollection services)
         => services.AddAutoMapper(
-            typeof(TablesProfile).Assembly, 
+            typeof(TablesProfile).Assembly,
             typeof(AreasProfile).Assembly,
             typeof(UsersProfile).Assembly,
-            typeof(BillsProfile).Assembly);
+            typeof(BillsProfile).Assembly,
+            typeof(MenusProfile).Assembly);
 }

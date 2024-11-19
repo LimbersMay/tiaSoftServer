@@ -7,7 +7,7 @@ public interface IMenuRepository
     Task<IEnumerable<Product>> GetMenu();
     Task<Product> CreateProduct(Product product);
     Task<Product> UpdateProduct(Product product);
-    Task<Product> GetProductById(string productId);
+    Task<Product?> GetProductById(string productId);
     Task<bool> UpdateProductImage(string productId, string imagePath);
 }
 
@@ -62,9 +62,8 @@ public class MenuRepository: IMenuRepository
         return true;
     }
     
-    public async Task<Product> GetProductById(string productId)
+    public async Task<Product?> GetProductById(string productId)
     {
-        var product = await _dbContext.Products.FindAsync(productId);
-        return product;
+        return await _dbContext.Products.FindAsync(productId);
     }
 }
