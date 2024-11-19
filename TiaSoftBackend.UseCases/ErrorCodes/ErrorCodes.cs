@@ -22,4 +22,7 @@ public enum ErrorCodes
     MenuNotUpdated,
     MenuNotCreated,
     MenuImageCannotBeUploaded,
+    
+    // TABLE STATUS ERRORS
+    TableStatusNotFound,
 }

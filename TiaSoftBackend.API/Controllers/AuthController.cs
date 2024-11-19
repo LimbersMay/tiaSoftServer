@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ public class AuthController : ControllerBase
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly IMapper _mapper;
 
-    public AuthController(UserManager<User> userManager, SignInManager<User> signInManager)
+    public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -58,14 +61,10 @@ public class AuthController : ControllerBase
 
         var roles = await _userManager.GetRolesAsync(user);
         
+        var userDto = _mapper.Map<UserDto>(user);
+        userDto.Roles = roles.ToList();
         
-        return new JsonResult(new UserDto
-        {
-            UserId = user.Id,
-            Username = user.UserName,
-            Email = user.Email,
-            Roles = roles.ToList()
-        });
+        return new JsonResult(userDto);
     }
 
     [HttpPost]
@@ -81,13 +80,10 @@ public class AuthController : ControllerBase
             var user = await _userManager.FindByEmailAsync(request.Email);
             var roles = await _userManager.GetRolesAsync(user);
 
-            return new JsonResult(new UserDto
-            {
-                UserId = user.Id,
-                Username = user.FullName,
-                Email = user.Email ?? string.Empty,
-                Roles = roles.ToList()
-            });
+            var userDto = _mapper.Map<UserDto>(user);
+            userDto.Roles = roles.ToList();
+        
+            return new JsonResult(userDto);
         }
 
         // Unauthorized

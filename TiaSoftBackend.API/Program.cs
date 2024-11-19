@@ -65,6 +65,7 @@ builder.Services.AddSignalR();
 
 builder.Services
     .AddUseCases()
+    .AddMappers()
     .AddData();
 
 var app = builder.Build();

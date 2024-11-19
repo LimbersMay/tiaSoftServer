@@ -7,5 +7,7 @@ namespace TiaSoftBackend.Data;
 public static class DataDependencyInjection
 {
     public static IServiceCollection AddData(this IServiceCollection services)
-        => services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+        => services.AddScoped<ICategoriesRepository, CategoriesRepository>()
+            .AddScoped<ITablesRepository, TablesRepository>()
+            .AddScoped<ITableStatusesRepository, TableStatusesRepository>();
 }

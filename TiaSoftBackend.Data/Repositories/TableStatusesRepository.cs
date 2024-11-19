@@ -5,7 +5,7 @@ namespace TiaSoftBackend.Data.Repositories;
 public interface ITableStatusesRepository
 {
     Task<IEnumerable<TableStatus>> GetTableStatuses();
-    Task<TableStatus> GetTableStatusByName(string name);
+    Task<TableStatus?> GetTableStatusByName(string name);
 }
 
 public class TableStatusesRepository: ITableStatusesRepository
@@ -22,7 +22,7 @@ public class TableStatusesRepository: ITableStatusesRepository
         return await _context.TableStatuses.ToListAsync();
     }
     
-    public async Task<TableStatus> GetTableStatusByName(string name)
+    public async Task<TableStatus?> GetTableStatusByName(string name)
     {
         return await _context.TableStatuses.FirstOrDefaultAsync(ts => ts.Name == name);
     }

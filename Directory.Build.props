@@ -1,0 +1,8 @@
+<Project>
+    <PropertyGroup>
+        <!-- Proyecto de inicio por defecto -->
+        <EFStartUpProject>./TiaSoftBackend.API</EFStartUpProject>
+        <!-- Proyecto que contiene las migraciones -->
+        <EFProject>./TiaSoftBackend.Data</EFProject>
+    </PropertyGroup>
+</Project>

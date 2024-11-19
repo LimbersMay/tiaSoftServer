@@ -14,6 +14,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Netmentor.ROP" Version="1.4.0" />
+        <PackageReference Include="Netmentor.ROP.ApiExtensions" Version="1.4.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
 
@@ -21,10 +22,6 @@
       <ProjectReference Include="..\TiaSoftBackend.Data\TiaSoftBackend.Data.csproj" />
       <ProjectReference Include="..\TiaSoftBackend.DTOs\TiaSoftBackend.DTOs.csproj" />
       <ProjectReference Include="..\TiaSoftBackend.UseCases\TiaSoftBackend.UseCases.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Hubs\" />
     </ItemGroup>
 
 </Project>

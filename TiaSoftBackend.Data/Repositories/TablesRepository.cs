@@ -7,7 +7,7 @@ namespace TiaSoftBackend.Data.Repositories;
 public interface ITablesRepository
 {
     Task<List<TableEntity>> GetTables(Specification<TableEntity> specification);
-    Task<TableEntity> GetTable(Specification<TableEntity> specification);
+    Task<TableEntity?> GetTable(Specification<TableEntity> specification);
     Task<TableEntity> CreateTable(TableEntity table);
     Task<TableEntity> UpdateTable(TableEntity table);
 }
@@ -32,7 +32,7 @@ public class TablesRepository : ITablesRepository
             .ToListAsync();
     }
     
-    public async Task<TableEntity> GetTable(Specification<TableEntity> specification)
+    public async Task<TableEntity?> GetTable(Specification<TableEntity> specification)
     {
         return await _context.Tables
             .Include(t => t.TableStatus)
