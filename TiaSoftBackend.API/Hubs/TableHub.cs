@@ -98,7 +98,7 @@ public class TableHub (TablesUseCases tables, BillsUseCases bills) : Hub<ITableH
             return;
         }
         
-        var bill = new CreateBillRequest()
+        var bill = new CreateBillRequest
         {
             TableId = newTable.Value.TableId,
             Name = "Cuenta de " + newTable.Value.Name,
@@ -159,6 +159,8 @@ public class TableHub (TablesUseCases tables, BillsUseCases bills) : Hub<ITableH
             
             return;
         }
+
+        Console.WriteLine("Table updated" + result.Value.Name);
         
         // Send the updated table to all users in the "ManagersAndCaptains" and the user who updated it
         await Clients.Group("ManagersAndCaptains").ReceiveTable(result.Value);

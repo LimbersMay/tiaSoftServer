@@ -1,28 +1,33 @@
 namespace TiaSoftBackend.UseCases.ErrorCodes;
 
-public enum ErrorCodes
+public static class ErrorCodes
 {
     // AUTH ERRORS
-    AuthErrorIncorrectCredentials,
-    AuthErrorEmailAlreadyExists,
-    AuthErrorNotAuthorized,
+    public const string AuthErrorIncorrectCredentials = "AuthErrorIncorrectCredentials";
+    public const string AuthErrorEmailAlreadyExists = "AuthErrorEmailAlreadyExists";
+    public const string AuthErrorNotAuthorized = "AuthErrorNotAuthorized";
     
     // USER ERRORS
-    UserNotFound,
-    UserNotUpdated,
-    UserErrorWhenUpdatingUSer,
-    UserErrorWhenCreatingUser,
-    UserErrorUserNotCreated,
+    public const string UserNotFound = "UserNotFound";
+    public const string UserNotUpdated = "UserNotUpdated";
+    public const string UserErrorWhenUpdatingUSer = "UserErrorWhenUpdatingUSer";
+    public const string UserErrorWhenCreatingUser = "UserErrorWhenCreatingUser";
+    public const string UserErrorUserNotCreated = "UserErrorUserNotCreated";
     
     // TABLE ERRORS
-    TableNotFound,
+    public const string TableNotFound = "TableNotFound";
+    public const string TableNotUpdated = "TableNotUpdated";
+    public const string TableNotCreated = "TableNotCreated";
     
     // MENU ERRORS
-    MenuNotFound,
-    MenuNotUpdated,
-    MenuNotCreated,
-    MenuImageCannotBeUploaded,
+    public const string MenuNotFound = "MenuNotFound";
+    public const string MenuNotUpdated = "MenuNotUpdated";
+    public const string MenuNotCreated = "MenuNotCreated";
+    public const string MenuImageCannotBeUploaded = "MenuImageCannotBeUploaded";
     
     // TABLE STATUS ERRORS
-    TableStatusNotFound,
-}
+    public const string TableStatusNotFound = "TableStatusNotFound";
+    public const string TableStatusNotUpdated = "TableStatusNotUpdated";
+    public const string TableStatusNotCreated = "TableStatusNotCreated";
+    public const string TableStatusNotDeleted = "TableStatusNotDeleted";
+} 

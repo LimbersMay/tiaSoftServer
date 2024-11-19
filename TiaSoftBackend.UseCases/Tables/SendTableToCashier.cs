@@ -1,7 +1,6 @@
 using AutoMapper;
 using ROP;
 using TiaSoftBackend.Data.Constants;
-using TiaSoftBackend.Data.Entities;
 using TiaSoftBackend.Data.Repositories;
 using TiaSoftBackend.Data.Specifications.TableSpecs;
 using TiaSoftBackend.DTOs.Tables;
@@ -16,24 +15,17 @@ public class SendTableToCashier (ITablesRepository tablesRepository, ITableStatu
 
         // If the table is not found, return an error
         if (table is null)
-            return Result.Failure<TableDto>(ErrorCodes.ErrorCodes.TableNotFound.ToString());
+            return Result.Failure<TableDto>(ErrorCodes.ErrorCodes.TableNotFound);
         
         var tableStatus = await tableStatusesRepository.GetTableStatusByName(TableStatusConstants.PorAutorizar.ToString());
 
         // If the table status is not found, return an error
         if (tableStatus is null) 
-            return Result.Failure<TableDto>(ErrorCodes.ErrorCodes.TableStatusNotFound.ToString());
-
-        var tableEntity = new TableEntity
-        {
-            TableId = tableId,
-            TableStatusId = tableStatus.TableStatusId,
-            Name = table.Name,
-            AreaId = table.AreaId,
-            UserId = table.UserId,
-        };
+            return Result.Failure<TableDto>(ErrorCodes.ErrorCodes.TableStatusNotFound);
         
-        var result = await tablesRepository.UpdateTable(tableEntity);
+        table.TableStatusId = tableStatus.TableStatusId;
+        
+        var result = await tablesRepository.UpdateTable(table);
         
         return mapper.Map<TableDto>(result);
     }

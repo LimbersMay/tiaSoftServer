@@ -15,19 +15,13 @@ public class UpdateTable (ITablesRepository tablesRepository, IMapper mapper)
 
         if (table is null)
         {
-            return Result.Failure<TableDto>(ErrorCodes.ErrorCodes.TableNotFound.ToString());
+            return Result.NotFound<TableDto>(ErrorCodes.ErrorCodes.TableNotFound.ToString());
         }
-
-        var tableEntity = new TableEntity
-        {
-            TableId = tableId,
-            Name = request.Name,
-            AreaId = request.AreaId,
-            UserId = table.UserId,
-            TableStatusId = table.TableStatusId
-        };
         
-        var result = await tablesRepository.UpdateTable(tableEntity);
+        table.Name = request.Name;
+        table.AreaId = request.AreaId;
+        
+        var result = await tablesRepository.UpdateTable(table);
         
         return mapper.Map<TableDto>(result);
     }

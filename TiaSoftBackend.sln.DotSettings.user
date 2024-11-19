@@ -16,6 +16,7 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;
   &lt;Assembly Path="/home/limbers/.nuget/packages/netmentor.rop/1.4.0/lib/net8.0/ROP.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
+	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=297ab11a_002Dbaba_002D4fc9_002Dbccf_002Dd18e5a4d881a_0023TiaSoftBackend/@EntryIndexedValue">True</s:Boolean>
 	
 	
 	

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using TiaSoftBackend.API;
+using TiaSoftBackend.API.Hubs;
 using TiaSoftBackend.Data;
 using TiaSoftBackend.Data.Entities;
 using TiaSoftBackend.UseCases;
@@ -99,5 +100,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+// ------- SIGNALR HUBS -------
+app.MapHub<TableHub>("api/hubs/table");
 
 app.Run();
