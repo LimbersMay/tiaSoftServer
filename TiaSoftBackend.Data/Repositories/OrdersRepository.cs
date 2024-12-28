@@ -12,13 +12,6 @@ public interface IOrdersRepository
     /// <returns></returns>
     Task<IEnumerable<Order>> GetOrdersBySpecification(Specification<Order> specification);
     
-    /// <summary>
-    /// Get an order based on a specification
-    /// </summary>
-    /// <param name="specification"></param>
-    /// <returns></returns>
-    Task<Order> GetOrderBySpecification(Specification<Order> specification);
-    
     Task<Order> CreateOrder(Order order);
     
     /// <summary>
@@ -44,19 +37,6 @@ public class OrdersRepository: IOrdersRepository
     {
         _dbContext = dbContext;
     }
-
-    public async Task<Order> GetOrderBySpecification(Specification<Order> specification)
-    {
-        var order = await _dbContext.Orders
-            .Include(o => o.User)
-            .Include(o => o.Table)
-            .Include(o => o.OrderStatus)
-            .Include(o => o.Area)
-            .Include(o => o.Products)
-            .FirstOrDefaultAsync(specification.ToExpression());
-        
-        return order;
-    }
     
     public async Task<IEnumerable<Order>> GetOrdersBySpecification(Specification<Order> specification)
     {
@@ -66,6 +46,7 @@ public class OrdersRepository: IOrdersRepository
             .Include(o => o.OrderStatus)
             .Include(o => o.Area)
             .Include(o => o.Products)
+            .ThenInclude(product => product.Product) 
             .Where(specification.ToExpression())
             .ToListAsync();
         
