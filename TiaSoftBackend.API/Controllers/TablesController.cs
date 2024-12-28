@@ -25,14 +25,13 @@ public class TablesController (TablesUseCases tables) : ControllerBase
 
         if (userId is null)
         {
-            return Result.NotFound<TableDto>(ErrorCodes.UserNotFound.ToString())
+            return Result.NotFound<TableDto>(ErrorCodes.UserNotFound)
                 .ToValueOrProblemDetails();
         }
 
         return await tables.GetTables.Execute(new UserIdSpecification(userId))
             .ToValueOrProblemDetails();
     }
-
 
     [HttpGet("{tableId}")]
     [Authorize(Roles = "SuperUsuario, Gerente, Capitan, Mesero")]
@@ -48,7 +47,7 @@ public class TablesController (TablesUseCases tables) : ControllerBase
         
         if (userId is null)
         {
-            return Result.NotFound<TableDto>(ErrorCodes.UserNotFound.ToString())
+            return Result.NotFound<TableDto>(ErrorCodes.UserNotFound)
                 .ToValueOrProblemDetails();
         }
         
