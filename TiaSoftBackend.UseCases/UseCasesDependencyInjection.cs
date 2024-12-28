@@ -57,6 +57,7 @@ public static class UseCasesDependencyInjection
     private static IServiceCollection AddOrderUseCases(this IServiceCollection services)
         => services.AddScoped<OrdersUseCases>()
             .AddScoped<CreateOrder>()
+            .AddScoped<CancelOrderItem>()
             .AddScoped<GetOrders>();
 
     public static IServiceCollection AddMappers(this IServiceCollection services)
