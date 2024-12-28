@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using TiaSoftBackend.DTOs.Bills;
 
 namespace TiaSoftBackend.DTOs.Orders;
 
