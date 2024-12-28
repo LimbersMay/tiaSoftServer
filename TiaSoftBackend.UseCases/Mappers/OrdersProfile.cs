@@ -12,7 +12,9 @@ public class OrdersProfile : Profile
         CreateMap<Order, OrderDto>()
             .ForMember(dest => dest.TableName, opt => opt.MapFrom(src => src.Table.Name));
         
-        CreateMap<OrderProduct, OrderProductDto>();
+        CreateMap<OrderProduct, OrderProductDto>()
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name));
+        
         CreateMap<OrderStatus, OrderStatusDto>();
     }
 }
