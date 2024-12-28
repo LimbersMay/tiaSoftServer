@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TiaSoftBackend.DTOs.Users;
 
-public class CreateUserRequest
+public class CreateUserRequest : SignInUserRequest
 {
     [Required]
-    public List<string> Roles { get; set; }
+    public required List<string> Roles { get; set; }
 }
