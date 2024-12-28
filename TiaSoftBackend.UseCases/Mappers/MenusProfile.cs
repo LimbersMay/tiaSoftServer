@@ -11,6 +11,7 @@ public class MenusProfile: Profile
         CreateMap<MenuDto, Product>();
         
         CreateMap<UpdateMenuRequest, Product>();
+        CreateMap<CreateMenuRequest, Product>();
         
         CreateMap<Product, MenuDto>()
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
