@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using ROP;
 using ROP.APIExtensions;
 using TiaSoftBackend.Data.Entities;
-using TiaSoftBackend.Data.Specifications.OrderSpecs;
 using TiaSoftBackend.UseCases.ErrorCodes;
 using TiaSoftBackend.UseCases.Orders;
+using TiaSoftBackend.Data.Specifications.OrderSpecs;
 
 namespace TiaSoftBackend.API.Controllers;
 
@@ -34,6 +34,14 @@ public class OrdersController (OrdersUseCases orders, UserManager<User> userMana
         Console.WriteLine($"User id: {userId}");
 
         return await orders.GetOrders.Execute(new UserIdSpecification(userId))
+            .ToValueOrProblemDetails();
+    }
+    
+    [HttpGet("{tableId:required}")]
+    [Authorize(Roles = "SuperUsuario, Gerente, Capitan, Mesero")]
+    public async Task<IActionResult> GetOrdersByTableId(string tableId)
+    {
+        return await orders.GetOrders.Execute(new TableIdSpecification(tableId))
             .ToValueOrProblemDetails();
     }
 }
