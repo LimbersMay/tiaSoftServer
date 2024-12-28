@@ -14,8 +14,6 @@ public class CreateProductDto
     [Required]
     public bool IsAvailable { get; set; }
     
-    public string? ImageUrl { get; set; }
-    
     [Required]
     public string CategoryId { get; set; }
 }

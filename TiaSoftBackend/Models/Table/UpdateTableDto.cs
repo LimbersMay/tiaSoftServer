@@ -9,10 +9,6 @@ public class UpdateTableDto
     public string Name { get; set; }
     
     [Required]
-    [MaxLength(100)]
-    public int Customers { get; set; }
-    
-    [Required]
     [DataType(DataType.Text)]
     public string AreaId { get; set; }
 }

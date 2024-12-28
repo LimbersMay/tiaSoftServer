@@ -1,16 +1,16 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TiaSoftBackend.Constants;
 using TiaSoftBackend.Entities;
+using TiaSoftBackend.Specifications;
 
 namespace TiaSoftBackend.Services;
 
 public interface ITablesRepository
 {
-    Task<IEnumerable<TableEntity>> GetTables();
+    Task<List<TableEntity>> GetTables(Specification<TableEntity> specification);
+    Task<TableEntity> GetTable(Specification<TableEntity> specification);
     Task<TableEntity> CreateTable(TableEntity table);
     Task<TableEntity> UpdateTable(TableEntity table);
-    Task<TableEntity> GetTableById(string tableId);
-    Task<TableEntity> GetActiveTable(string tableName);
 }
 
 public class TablesRepository : ITablesRepository
@@ -21,15 +21,28 @@ public class TablesRepository : ITablesRepository
     {
         _context = context;
     }
-
-    public async Task<IEnumerable<TableEntity>> GetTables()
+    
+    public async Task<List<TableEntity>> GetTables(Specification<TableEntity> specification)
     {
         return await _context.Tables
             .Include(t => t.TableStatus)
             .Include(t => t.User)
-            .Include(t => t.Area).ToListAsync();
+            .Include(t => t.Area)
+            .Include(t => t.PaymentAuthorizedByUser)
+            .Where(specification.ToExpression())
+            .ToListAsync();
     }
-
+    
+    public async Task<TableEntity> GetTable(Specification<TableEntity> specification)
+    {
+        return await _context.Tables
+            .Include(t => t.TableStatus)
+            .Include(t => t.User)
+            .Include(t => t.Area)
+            .Include(t => t.PaymentAuthorizedByUser)
+            .FirstOrDefaultAsync(specification.ToExpression());
+    }
+    
     public async Task<TableEntity> CreateTable(TableEntity table)
     {
         var result = await _context.Tables.AddAsync(table);
@@ -40,6 +53,7 @@ public class TablesRepository : ITablesRepository
             .Include(t => t.TableStatus)
             .Include(t => t.User)
             .Include(t => t.Area)
+            .Include(t => t.PaymentAuthorizedByUser)
             .FirstOrDefaultAsync(t => t.TableId == result.Entity.TableId);
 
         return entity;
@@ -55,25 +69,9 @@ public class TablesRepository : ITablesRepository
             .Include(t => t.TableStatus)
             .Include(t => t.User)
             .Include(t => t.Area)
+            .Include(t => t.PaymentAuthorizedByUser)
             .FirstOrDefaultAsync(t => t.TableId == result.Entity.TableId);
 
         return entity;
-    }
-
-    public async Task<TableEntity> GetTableById(string tableId)
-    {
-        return await _context.Tables.FirstOrDefaultAsync(t => t.TableId == tableId);
-    }
-
-    public async Task<TableEntity> GetActiveTable(string tableName)
-    {
-        /*
-         * An active table is a table with a status of "Activo" or "PorAutorizar".
-         */
-
-        return await _context.Tables.FirstOrDefaultAsync(t =>
-            t.Name == tableName &&
-            (t.TableStatus.Name == TableStatusConstants.Activo.ToString() ||
-             t.TableStatus.Name == TableStatusConstants.PorAutorizar.ToString()));
     }
 }
