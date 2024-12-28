@@ -11,4 +11,5 @@ public class OrderDto
     public required UserDto User { get; set; }
     public required OrderStatusDto OrderStatus { get; set; }
     public required List<OrderProductDto> Products { get; set; }
+    public required DateTime CreatedAt { get; set; }
 }
