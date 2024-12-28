@@ -1,6 +1,5 @@
 using AutoMapper;
 using ROP;
-using TiaSoftBackend.Data.Entities;
 using TiaSoftBackend.Data.Repositories;
 using TiaSoftBackend.Data.Specifications.TableSpecs;
 using TiaSoftBackend.DTOs.Tables;
@@ -15,7 +14,7 @@ public class UpdateTable (ITablesRepository tablesRepository, IMapper mapper)
 
         if (table is null)
         {
-            return Result.NotFound<TableDto>(ErrorCodes.ErrorCodes.TableNotFound.ToString());
+            return Result.NotFound<TableDto>(ErrorCodes.ErrorCodes.TableNotFound);
         }
         
         table.Name = request.Name;
