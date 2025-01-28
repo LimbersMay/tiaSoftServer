@@ -361,6 +361,32 @@ namespace TiaSoftBackend.Data.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("TiaSoftBackend.Data.Entities.OrderEntities.OrderProductStatus", b =>
+                {
+                    b.Property<string>("OrderProductStatusId")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("OrderProductStatusId");
+
+                    b.ToTable("OrderProductStatuses");
+                });
+
             modelBuilder.Entity("TiaSoftBackend.Data.Entities.OrderProduct", b =>
                 {
                     b.Property<string>("OrderId")
@@ -376,6 +402,11 @@ namespace TiaSoftBackend.Data.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<string>("OrderProductStatusId")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
                     b.Property<decimal>("PriceAtOrder")
                         .HasColumnType("decimal(18,2)");
 
@@ -388,6 +419,8 @@ namespace TiaSoftBackend.Data.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
 
                     b.HasKey("OrderId", "ProductId");
+
+                    b.HasIndex("OrderProductStatusId");
 
                     b.HasIndex("ProductId");
 
@@ -696,6 +729,12 @@ namespace TiaSoftBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TiaSoftBackend.Data.Entities.OrderEntities.OrderProductStatus", "OrderProductStatus")
+                        .WithMany()
+                        .HasForeignKey("OrderProductStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TiaSoftBackend.Data.Entities.Product", "Product")
                         .WithMany("Orders")
                         .HasForeignKey("ProductId")
@@ -703,6 +742,8 @@ namespace TiaSoftBackend.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
+
+                    b.Navigation("OrderProductStatus");
 
                     b.Navigation("Product");
                 });
