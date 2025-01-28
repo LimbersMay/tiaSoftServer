@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TiaSoftBackend.Data.Repositories;
 
 namespace TiaSoftBackend.Data;
@@ -13,5 +12,6 @@ public static class DataDependencyInjection
             .AddScoped<IBillsRepository, BillsRepository>()
             .AddScoped<IAreasRepository, AreasRepository>()
             .AddScoped<IMenuRepository, MenuRepository>()
-            .AddScoped<IOrdersRepository, OrdersRepository>();
+            .AddScoped<IOrdersRepository, OrdersRepository>()
+            .AddScoped<IOrderProductRepository, OrderProductRepository>();
 }
