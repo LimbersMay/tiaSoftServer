@@ -63,11 +63,12 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddSignalR();
 
-
 builder.Services
     .AddUseCases()
     .AddMappers()
     .AddData();
+
+builder.Services.AddTransient<DataSeeder>();
 
 var app = builder.Build();
 
@@ -76,14 +77,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var configuration = services.GetRequiredService<IConfiguration>();
-    
-        await RoleInitializer.CreateRoles(services, configuration);
-    }
 }
 
 // Configure CORS to allow credentials and specific origins
@@ -100,6 +93,12 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    await seeder.Seed();
+}
 
 // ------- SIGNALR HUBS -------
 app.MapHub<TableHub>("api/hubs/table");

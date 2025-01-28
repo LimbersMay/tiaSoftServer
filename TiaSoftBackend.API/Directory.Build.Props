@@ -1,0 +1,8 @@
+<Project>
+    <PropertyGroup>
+        <!-- Define el proyecto de datos (la capa de acceso a datos) -->
+        <EfDataProject>./TiaSoftBackend.Data/TiaSoftBackend.Data.csproj</EfDataProject>
+        <!-- Define el proyecto de inicio (la aplicación o API) -->
+        <EfStartProject>./TiaSoftBackend.API/TiaSoftBackend.API.csproj</EfStartProject>
+    </PropertyGroup>
+</Project>
