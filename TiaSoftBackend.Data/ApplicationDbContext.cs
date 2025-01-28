@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TiaSoftBackend.Data.Entities;
+using TiaSoftBackend.Data.Entities.OrderEntities;
 
 namespace TiaSoftBackend.Data;
 
@@ -64,22 +65,14 @@ public class ApplicationDbContext: IdentityDbContext<User>
     }
 
     public DbSet<Category> Categories { get; set; }
-    
     public DbSet<Product> Products { get; set; }
-    
     public DbSet<Area> Areas { get; set; }
-    
     public DbSet<TableStatus> TableStatuses { get; set; }
-    
     public DbSet<TableEntity> Tables { get; set; }
-    
     public DbSet<OrderStatus> OrderStatuses { get; set; }
-    
     public DbSet<Order> Orders { get; set; }
-    
     public DbSet<OrderProduct> OrderProducts { get; set; }
-    
     public DbSet<Bill> Bills { get; set; }
-    
     public DbSet<DailyOrderCounter> DailyOrderCounters { get; set; }
+    public DbSet<OrderProductStatus> OrderProductStatuses { get; set; }
 }

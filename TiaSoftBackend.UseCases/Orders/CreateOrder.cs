@@ -37,6 +37,7 @@ public class CreateOrder (IOrdersRepository ordersRepository, IMenuRepository me
                 // Calculate the total price of the bill by adding the price of each product multiplied by the quantity
                 billTotal += product.Price * item.Quantity;
     
+                // TODO: Add orderStatusId 
                 products.Add(new OrderProduct
                 {
                     OrderId = newOrderId,
